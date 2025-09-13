@@ -29,6 +29,10 @@ public class HoldNote : MonoBehaviour
         this.startPosition = startPos;
         this.target = targetTransform;
         transform.position = startPos;
+        
+        Vector3 dir = (target.position - startPosition).normalized;
+        if (dir != Vector3.zero)
+            transform.rotation = Quaternion.LookRotation(Vector3.forward, dir);
 
         // Spawn stretchable body
         _bodyInstance = Instantiate(bodyPrefab, transform);
@@ -36,11 +40,16 @@ public class HoldNote : MonoBehaviour
 
         // Place it behind the head
         _bodyTransform.localPosition = Vector3.zero;
-        _bodyTransform.localScale = new Vector3(1f, 0.01f, 1f); // start tiny
+        _bodyTransform.localScale = new Vector3(10f, 10f, 1f); // start tiny
     }
     
     void Start()
     {
+        // transform.position = startPosition;
+        // Vector3 dir = (target.position - startPosition).normalized;
+        // if (dir != Vector3.zero)
+        //     transform.rotation = Quaternion.LookRotation(Vector3.forward, dir);
+        
         if (_bodyInstance == null)
         {
             _bodyInstance = Instantiate(bodyPrefab, transform);
@@ -49,6 +58,8 @@ public class HoldNote : MonoBehaviour
         if (_bodyTransform == null)
         {
             _bodyTransform = _bodyInstance.transform;
+            _bodyTransform.localPosition = Vector3.zero;
+            _bodyTransform.localScale = new Vector3(1f, 1f, 1f);
         }
     }
 
@@ -76,16 +87,19 @@ public class HoldNote : MonoBehaviour
         // Optional: push body backward so it "extends" behind the head
         _bodyTransform.localPosition = new Vector3(0f, -_bodyTransform.localScale.y / 2f, 0f);
     }
-
+    
+    private float internalTime = 0f;
     void shrink()
     {
         if (_bodyTransform == null) return;
 
+        internalTime += Time.deltaTime;
+        float progress = Mathf.Clamp01(internalTime / holdDuration);
         // Shrink over time until destroyed
-        _bodyTransform.localScale = Vector3.Lerp(
-            _bodyTransform.localScale,
-            Vector3.zero,
-            Time.deltaTime * 5f
+        _bodyTransform.localScale = new Vector3(
+            _bodyTransform.localScale.x,
+            Mathf.Lerp(1f, 0.01f, progress), // grows shorter
+            _bodyTransform.localScale.z
         );
 
         if (_bodyTransform.localScale.magnitude < 0.01f)
