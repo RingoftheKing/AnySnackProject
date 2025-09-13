@@ -12,28 +12,28 @@ public class colliede_detect : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0)) // Êó±ê×ó¼ü°´ÏÂ
+        if (Input.GetMouseButtonDown(0)) // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            // »ñÈ¡Êó±êÏÂËùÓÐÅö×²Æ÷
+            // ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×²ï¿½ï¿½
             Collider2D[] hits = Physics2D.OverlapPointAll(mousePos);
 
             if (hits.Length > 0)
             {
                 Collider2D target = null;
 
-                // °´ÓÅÏÈ¼¶Ñ¡Ôñ
+                // ï¿½ï¿½ï¿½ï¿½ï¿½È¼ï¿½Ñ¡ï¿½ï¿½
                 foreach (Collider2D hit in hits)
                 {
                     if (hit.CompareTag("perfect"))
                     {
                         target = hit;
-                        break; // ÓÅÏÈ perfect
+                        break; // ï¿½ï¿½ï¿½ï¿½ perfect
                     }
                 }
 
-                // Èç¹ûÃ»ÓÐ perfect£¬ÔÙÕÒ good
+                // ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ perfectï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ good
                 if (target == null)
                 {
                     foreach (Collider2D hit in hits)
@@ -46,7 +46,7 @@ public class colliede_detect : MonoBehaviour
                     }
                 }
 
-                // Èç¹ûÃ»ÓÐ perfect »ò good£¬ÔÙÕÒ bad
+                // ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ perfect ï¿½ï¿½ goodï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ bad
                 if (target == null)
                 {
                     foreach (Collider2D hit in hits)
@@ -59,7 +59,7 @@ public class colliede_detect : MonoBehaviour
                     }
                 }
 
-                // ´¦Àíµã»÷
+                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 if (target != null)
                 {
                     if (target.CompareTag("perfect"))
@@ -77,6 +77,7 @@ public class colliede_detect : MonoBehaviour
                         Debug.Log("Click Bad!");
                         lg.scoreup(200);
                     }
+                    Destroy(gameObject);
                 }
             }
             else
