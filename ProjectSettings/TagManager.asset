@@ -7,6 +7,7 @@ TagManager:
   - perfect
   - good
   - bad
+  - logic
   layers:
   - Default
   - TransparentFX

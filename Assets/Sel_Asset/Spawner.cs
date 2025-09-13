@@ -23,35 +23,29 @@ public class Spawner : MonoBehaviour
         }
         else       {
 
-            spawnNote(Random.Range(1,5));
+            spawnNote(Random.Range(1,13));
             timer = 0.0f;
         }
     }
 
     void spawnNote(int track)
     {
+        // 计算旋转角度
+        float rotationAngle = -((track - 1) * 30f + 15f);
+        Quaternion rotation = Quaternion.Euler(0, 0, rotationAngle); // 绕Z轴旋转
+
+        // 位置
         Vector3 track_vector = Vector3.zero;
-        Debug.Log("spawned note in track " + track);
 
-        if (track == 1)
-        {
-            track_vector = new Vector3(-5f, 7f, 0f);
-        }
-        else if (track == 2)
-        {
-            track_vector = new Vector3(5f, 7f, 0f);
-        }
-        else if (track == 3)
-        {
-            track_vector = new Vector3(-1.67f, 7f, 0f);
-        }
-        else if (track == 4)
-        {
-            track_vector = new Vector3(1.67f, 7f, 0f);
-        }
 
-        Instantiate(noteprefab, track_vector, Quaternion.identity);
-        Normal_Note_Script note_script = noteprefab.GetComponent<Normal_Note_Script>();
+        // 实例化并带旋转
+        GameObject noteInstance = Instantiate(noteprefab, track_vector, rotation);
+
+        // 初始化内部参数
+        Normal_Note_Script note_script = noteInstance.GetComponent<Normal_Note_Script>();
         note_script.track_no = track;
+
+        Debug.Log("spawned note in track " + track + " with rotation " + rotationAngle);
     }
+
 }

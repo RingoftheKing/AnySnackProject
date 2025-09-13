@@ -3,9 +3,10 @@ using UnityEngine;
 public class colliede_detect : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public Logic_Script lg;
     void Start()
     {
-        
+        lg = GameObject.FindGameObjectWithTag("logic").GetComponent<Logic_Script>();
     }
 
     // Update is called once per frame
@@ -14,25 +15,68 @@ public class colliede_detect : MonoBehaviour
         if (Input.GetMouseButtonDown(0)) // 鼠标左键按下
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Collider2D hit = Physics2D.OverlapPoint(mousePos);
 
-            if (hit != null)
+            // 获取鼠标下所有碰撞器
+            Collider2D[] hits = Physics2D.OverlapPointAll(mousePos);
+
+            if (hits.Length > 0)
             {
-                if (hit.CompareTag("perfect"))
+                Collider2D target = null;
+
+                // 按优先级选择
+                foreach (Collider2D hit in hits)
                 {
-                    Debug.Log("Click Perfect!");
+                    if (hit.CompareTag("perfect"))
+                    {
+                        target = hit;
+                        break; // 优先 perfect
+                    }
                 }
-                else if (hit.CompareTag("good"))
+
+                // 如果没有 perfect，再找 good
+                if (target == null)
                 {
-                    Debug.Log("Click Good!");
+                    foreach (Collider2D hit in hits)
+                    {
+                        if (hit.CompareTag("good"))
+                        {
+                            target = hit;
+                            break;
+                        }
+                    }
                 }
-                else if (hit.CompareTag("bad"))
+
+                // 如果没有 perfect 或 good，再找 bad
+                if (target == null)
                 {
-                    Debug.Log("Click Bad!");
+                    foreach (Collider2D hit in hits)
+                    {
+                        if (hit.CompareTag("bad"))
+                        {
+                            target = hit;
+                            break;
+                        }
+                    }
                 }
-                else
+
+                // 处理点击
+                if (target != null)
                 {
-                    Debug.Log("Clicked on collider but tag not detected");
+                    if (target.CompareTag("perfect"))
+                    {
+                        Debug.Log("Click Perfect!");
+                        lg.scoreup(1000);
+                    }
+                    else if (target.CompareTag("good"))
+                    {
+                        Debug.Log("Click Good!");
+                        lg.scoreup(800);
+                    }
+                    else if (target.CompareTag("bad"))
+                    {
+                        Debug.Log("Click Bad!");
+                        lg.scoreup(200);
+                    }
                 }
             }
             else
@@ -40,8 +84,8 @@ public class colliede_detect : MonoBehaviour
                 Debug.Log("Clicked empty space");
             }
         }
-
     }
+
 
     //private void OnTriggerEnter2D(Collider2D collision)
     //{

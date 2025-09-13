@@ -8,7 +8,11 @@ public class Normal_Note_Script : MonoBehaviour
     public Collider2D perfect_zone;
     public Collider2D good_zone;
     public Collider2D bad_zone;
-    public float bottombound = -8.0f;
+    public float bottombound = -7.0f;
+    public float topbound = 8.0f;
+    public float leftbound = -11.0f;
+    public float rightbound = 11.0f;
+
 
     [Header("Movement Settings")]
     public float moveSpeed = 5f;
@@ -22,16 +26,20 @@ public class Normal_Note_Script : MonoBehaviour
     private Vector3 targetPosition;
     private bool isMoving = false;
 
-    Vector3[] trackPositions = new Vector3[8]
+    Vector3[] trackPositions = new Vector3[12]
 {
-    new Vector3(-5f, -9f, 0f),  // 轨道1
-    new Vector3(5f, -9f, 0f),  // 轨道2
-    new Vector3(-1.67f, -9f, 0f),  // 轨道3
-    new Vector3(1.67f, -9f, 0f),  // 轨道4
-    new Vector3(1.2f, -9f, 0f),   // 轨道5
-    new Vector3(3.6f, -9f, 0f),   // 轨道6
-    new Vector3(6.0f, -9f, 0f),   // 轨道7
-    new Vector3(8.4f, -9f, 0f)    // 轨道8
+    new Vector3(3.37f, 12.68f, 0f),  // 轨道1
+    new Vector3(9.24f,9.3f, 0f),  // 轨道2
+    new Vector3(12.64f, 3.41f, 0f),  // 轨道3
+    new Vector3(12.52f, -3.32f, 0f),  // 轨道4
+    new Vector3(9.21f, -9.34f, 0f),   // 轨道5
+    new Vector3(3.49f, -12.65f, 0f),   // 轨道6
+    new Vector3(-3.49f, -12.65f, 0f),   // 轨道7
+    new Vector3(-9.21f, -9.34f, 0f),
+    new Vector3(-12.52f, -3.32f, 0f),
+    new Vector3(-12.64f, 3.41f, 0f),
+    new Vector3(-9.24f,9.3f, 0f),
+    new Vector3(-3.37f, 12.68f, 0f)
 };
 
     void Start()
@@ -49,7 +57,7 @@ public class Normal_Note_Script : MonoBehaviour
         {
             MoveToTarget();
         }
-        if (transform.position.y < bottombound)
+        if (transform.position.y < bottombound || transform.position.x<leftbound || transform.position.x > rightbound || transform.position.y>topbound)
         {
             Debug.Log("note deleted");
             Destroy(gameObject);
