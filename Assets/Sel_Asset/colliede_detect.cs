@@ -1,9 +1,13 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class colliede_detect : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public Logic_Script lg;
+    public Text scoretext;
+    private float timer = 1f;
+    public float spawntime = 10f;
     void Start()
     {
         lg = GameObject.FindGameObjectWithTag("logic").GetComponent<Logic_Script>();
@@ -66,45 +70,38 @@ public class colliede_detect : MonoBehaviour
                     {
                         Debug.Log("Click Perfect!");
                         lg.scoreup(1000);
+                        
+                            scoretext.text = "Perfect!";
+                            
+                        
                     }
                     else if (target.CompareTag("good"))
                     {
                         Debug.Log("Click Good!");
                         lg.scoreup(800);
+                        
+                            scoretext.text = "Good!";
+                           
                     }
                     else if (target.CompareTag("bad"))
                     {
                         Debug.Log("Click Bad!");
                         lg.scoreup(200);
+                        
+                        
+                            scoretext.text = "Bad!";
+                          
                     }
                 }
             }
             else
             {
                 Debug.Log("Clicked empty space");
+                scoretext.text = "Miss!";
             }
         }
     }
 
 
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    if (collision.gameObject.CompareTag("perfect"))
-    //    {
-
-    //        Debug.Log("Perfect!");
-    //    }
-    //    else if (collision.gameObject.CompareTag("good"))
-    //    {
-    //        Debug.Log("Good!");
-    //    }
-    //    else if (collision.gameObject.CompareTag("bad"))
-    //    {
-    //        Debug.Log("Bad!");
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("Collide cannot detect");
-    //    }
-    //}
+    
 }
