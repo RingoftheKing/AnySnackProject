@@ -441,7 +441,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScheduledAudio
   source: {fileID: 1974000893}
-  startTime: 8923175892345
+  startTime: 5
 --- !u!81 &163637071
 AudioListener:
   m_ObjectHideFlags: 0
